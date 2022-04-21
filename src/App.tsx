@@ -9,36 +9,6 @@ import  { UserWrapper }  from './components/UserWrapper'
 
 import './App.css' 
 
-// Okay try it out and see if movement works
-// I think you can do without, it's just a lot of reconnects
-// idk how bad it was haha
-// Oh well, you'll get it running soon. Maybe you wanna make sure everything is formatted correctly
-// Also we don't need most the comments on this file, you know the ones that are their own files now
-
-// What's it saying? What line
-// I'm pretty sure it's possible, I'll fight with it a bit later
-// Okay so we need to find this 'find' function
-// If you click the think in the console you get the file.
-// Press the {} in the bottom left of that window
-// Then it should be somewhat readable
-//  let's goooooo
-// I added a screenshot of the code*, it's pretty good < thanks copilot 
-// Wait, it was working on pc before
-// Try and restartshould :DDDDDDDD
-// It's an issue with websockets and ngrok
-// restartttt
-// I was working fine with ngrok before
-//http://b691-152-115-164-30.ngrok.io
-// what about in dev mode in your browser
-//I sent you on slack it seems that websocekts are working
-//:D done it is up, when I am going directly to localhost there errors are the same
-// Oh that's an error because it can't find any controllers
-// i am in the file oh wait it is for error can i send you the ngrok link? it will be probably easier than realying on me XD
-// yea wait my headset is dead, sure
-//need to wait a little bit quest 2 does not have apps now and quest 1 is dead because of battery
-// there was update on quest 2 and everyone is complaining about it on reddit
-// and quest 1 did not went to sleep mode and it was running all the time <facepalm>
-
 
 function App() {
     const [socketClient, setSocketClient] = useState(null)
