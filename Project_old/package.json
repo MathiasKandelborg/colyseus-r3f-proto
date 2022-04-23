@@ -8,6 +8,7 @@
     },
     "dependencies": {
         "@react-three/xr": "^3.5.0",
+        "@types/three": "^0.139.0",
         "express": "^4.17.1",
         "express-promise-router": "^4.1.0",
         "prettier": "^2.4.1",
