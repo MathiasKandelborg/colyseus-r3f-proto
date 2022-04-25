@@ -1,5 +1,5 @@
-import { FlyControls } from '@react-three/drei'
-import React, { useState, useEffect, useRef } from 'react'
+import { OrbitControls } from '@react-three/drei'
+import React, { useEffect, useRef, useState } from 'react'
 
 const ControlsWrapper = ({ socket }) => {
     const controlsRef = useRef()
@@ -43,7 +43,7 @@ const ControlsWrapper = ({ socket }) => {
     }, [controlsRef, socket])
 
     //
-    return <FlyControls rollSpeed={1} dragToLook={true} ref={controlsRef} />
+    return <OrbitControls ref={controlsRef} />
 }
 
 export { ControlsWrapper }

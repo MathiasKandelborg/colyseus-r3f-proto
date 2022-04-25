@@ -1,33 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react'
 import { extend, useThree } from '@react-three/fiber'
+import React, { useEffect, useRef, useState } from 'react'
 import { DragControls } from 'three/examples/jsm/controls/DragControls'
 
 extend({ DragControls })
-function Draggable(props) {
+function Draggable({ objects, setObjects, children}) {
     const groupRef = useRef()
     const controlRef = useRef()
-    const [objects, setObjects] = useState([])
+  
     const { camera, gl, scene } = useThree()
+
     useEffect(() => {
+        // @ts-ignore
         setObjects(groupRef.current.children)
     }, [groupRef])
 
     useEffect(() => {
-        /*       controlRef.current.addEventListener('hoveron', () => {
-            scene.orbitControls.enabled = false
+        controlRef.current.addEventListener('hoveron', () => {
+             scene.orbitControls.enabled = false
         })
         controlRef.current.addEventListener('hoveroff', () => {
-            if (scene. .orbitControls) {
-            scene.flyControl.enabled = true
-        }) */
+             scene.flyControl.enabled = true
+        })
     }, [objects])
+
     return (
         <group ref={groupRef}>
+            {/* @ts-ignore */}
             <dragControls
                 ref={controlRef}
                 args={[objects, camera, gl.domElement]}
             />
-            {props.children}
+            {children}
         </group>
     )
 }
