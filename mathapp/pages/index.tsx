@@ -1,24 +1,11 @@
+import * as MUI from '@mui/material'
+import { DefaultXRControllers, Hands, useXR, VRCanvas } from '@react-three/xr'
 import { useEffect, useState } from 'react'
-import io from 'Socket.IO-client'
-import {
-    Hands,
-    VRCanvas,
-    DefaultXRControllers,
-    useXR,
-    useController,
-    useXRFrame
-} from '@react-three/xr'
-import { movement } from '../util/hooks/movementHook'
+import io from 'socket.io-client'
 import { ControlsWrapper } from '../components/controlsWrapper'
 import { ObjectWrapper } from '../components/ObjectsWrapper'
 import { UserWrapper } from '../components/UserWrapper'
-import * as MUI from '@mui/material'
-import { Box, Sphere } from '@react-three/drei'
-import {
-    MeshNormalMaterial,
-    MeshStandardMaterial,
-    SphereBufferGeometry
-} from 'three'
+import { movement } from '../util/hooks/movementHook'
 
 let socket
 
@@ -36,16 +23,19 @@ const Home = () => {
 
     useEffect(() => {
         // On mount initialize the socket connection
-        setSocketClient(io())
-        // Dispose gracefuly
-        return () => {
-            if (socketClient) socketClient.disconnect()
-        }
     }, [])
 
     // Useeffect to listen for updates from the socket clients
     useEffect(() => {
         if (socketClient) {
+            socketClient.on('connect', () => {
+                console.log('connected')
+            })
+
+            socketClient.on('disconnect', () => {
+                console.log('connected')
+            })
+
             socketClient.on('move', (clients) => {
                 setClients(clients)
             })
@@ -58,15 +48,13 @@ const Home = () => {
 
     const socketInitializer = async () => {
         await fetch('/api/socket')
-        socket = io()
+        // socket = io()
+        setSocketClient(io())
 
-        socket.on('connect', () => {
-            console.log('connected')
-        })
-
-        socket.on('disconnect', () => {
-            console.log('connected')
-        })
+        // Dispose gracefuly
+        return () => {
+            if (socketClient) socketClient.disconnect()
+        }
     }
 
     return (

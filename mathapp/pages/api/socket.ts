@@ -1,4 +1,4 @@
-import { Server } from 'Socket.IO'
+import { Server } from 'socket.io'
 
 let clients = {}
 let objects = {}
@@ -22,7 +22,7 @@ const SocketHandler = (req, res) => {
                 rotation: [0, 0, 0]
             }
 
-            // Emit a reciever called move to all clients
+            // Emit a receiver called move to all clients
             io.sockets.emit('move', clients)
 
             io.sockets.emit('update-object-position', objects)
