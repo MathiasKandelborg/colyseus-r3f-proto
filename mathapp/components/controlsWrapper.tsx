@@ -1,13 +1,16 @@
 import { OrbitControls } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
+import { useStore } from '../util/store'
 
 const ControlsWrapper = ({ socket }) => {
     const controlsRef = useRef()
     const [updateCallback, setUpdateCallback] = useState(null)
+    const orbitControlsEnabled = useStore((state) => state.orbitControlsEnabled)
 
     // Register the update event and clean up
     useEffect(() => {
         const onControlsChange = (val) => {
+            /*  if (orbitControlsEnabled) { */
             const { position, rotation } = val.target.object
             const { id } = socket
 
@@ -43,7 +46,7 @@ const ControlsWrapper = ({ socket }) => {
     }, [controlsRef, socket])
 
     //
-    return <OrbitControls ref={controlsRef} />
+    return <OrbitControls enabled={orbitControlsEnabled} ref={controlsRef} />
 }
 
 export { ControlsWrapper }

@@ -6,28 +6,43 @@ import { ControlsWrapper } from '../components/controlsWrapper'
 import { ObjectWrapper } from '../components/ObjectsWrapper'
 import { UserWrapper } from '../components/UserWrapper'
 import { movement } from '../util/hooks/movementHook'
-
-let socket
+import GltfLoader from '../components/gltfloader'
+import Draggable from '../components/Draggable'
+import { useStore } from '../util/store'
+import { obj } from '../util/objectData'
 
 const Home = () => {
     const [socketClient, setSocketClient] = useState(null)
     const [clients, setClients] = useState({})
-    const [objects, setObjects] = useState({})
+    const objects = useStore((state) => state.objects)
+    const setObjects = useStore((state) => state.setObjects)
+    const setState = useStore((state) => state.setObjs)
+
+    // const [objects, setObjects] = useState({})
 
     const { player, controllers } = useXR()
 
-    useEffect(() => {
-        socketInitializer()
-        movement(socketClient, player, controllers)
-    }, [])
+    const socketInitializer = async () => {
+        await fetch('/api/socket')
+        // socket = io()
+        setSocketClient(io())
+
+        // Dispose gracefuly
+        return () => {
+            if (socketClient) socketClient.disconnect()
+        }
+    }
 
     useEffect(() => {
-        // On mount initialize the socket connection
+        socketInitializer()
+
+        movement(socketClient, player, controllers)
     }, [])
 
     // Useeffect to listen for updates from the socket clients
     useEffect(() => {
         if (socketClient) {
+            console.log(socketClient)
             socketClient.on('connect', () => {
                 console.log('connected')
             })
@@ -40,22 +55,22 @@ const Home = () => {
                 setClients(clients)
             })
 
+            socketClient.on('state', (state) => {
+                console.log(state)
+                setState(state)
+            })
+
+            console.log('emitting add object')
+            socketClient.emit('add-object', {
+                object: obj
+            })
+
             socketClient.on('update-object-position', (objects) => {
+                console.log(objects)
                 setObjects(objects)
             })
         }
     }, [socketClient])
-
-    const socketInitializer = async () => {
-        await fetch('/api/socket')
-        // socket = io()
-        setSocketClient(io())
-
-        // Dispose gracefuly
-        return () => {
-            if (socketClient) socketClient.disconnect()
-        }
-    }
 
     return (
         <MUI.Container sx={{ height: '100vh' }}>
@@ -82,29 +97,35 @@ const Home = () => {
                                 />
                             )
                         })}
-                    {Object.keys(objects)
+                    {objects
                         // Map does something for each object
                         // Each object is named in the callback function
                         .map((object) => {
-                            console.log(objects[object])
-                            const { position, rotation } = objects[object]
+                            console.log(object)
+                            const { id, position, rotation } = object
+
                             return (
-                                <ObjectWrapper
-                                    key={object}
-                                    id={object}
-                                    position={position}
-                                    rotation={rotation}
-                                />
+                                <Draggable socketClient={socketClient}>
+                                    <ObjectWrapper
+                                        key={id}
+                                        id={id}
+                                        position={position}
+                                        rotation={rotation}
+                                    />
+                                </Draggable>
                             )
                         })}
                     <Hands />
                     <DefaultXRControllers />
-                    <pointLight position={[10, 10, 10]} />
-                    <ObjectWrapper
-                        position={[0, 0, 1]}
-                        rotation={[0, 0, 0]}
-                        id="123"
-                    />
+                    <pointLight position={[0, 10, 0]} />
+                    {/*    <Draggable socketClient={socketClient}>
+                            <ObjectWrapper
+                                position={[0, 0, 1]}
+                                rotation={[0, 0, 0]}
+                                id="0"
+                            />
+                        </Draggable> */}
+                    {/*  <GltfLoader /> */}
                 </VRCanvas>
             )}
         </MUI.Container>

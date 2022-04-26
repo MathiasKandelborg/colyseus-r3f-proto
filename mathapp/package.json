@@ -19,6 +19,8 @@
         "@react-three/drei": "^9.5.3",
         "@react-three/fiber": "^8.0.12",
         "@react-three/xr": "^3.5.0",
+        "@types/socket.io": "^3.0.2",
+        "@types/socket.io-client": "^3.0.0",
         "@types/three": "^0.139.0",
         "express": "^4.17.1",
         "express-promise-router": "^4.1.0",

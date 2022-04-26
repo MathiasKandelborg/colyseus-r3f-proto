@@ -1,7 +1,8 @@
 import { Server } from 'socket.io'
+import { store } from '../../util/store'
 
+let objects = []
 let clients = {}
-let objects = {}
 
 const SocketHandler = (req, res) => {
     if (res.socket.server.io) {
@@ -34,12 +35,39 @@ const SocketHandler = (req, res) => {
                 io.sockets.emit('move', clients)
             })
 
+            client.on('add-object', (object) => {
+                //    console.log('adding object: ', object.object)
+                if (objects.find((obj) => obj.uuid === object.object.uuid)) {
+                    console.log('object already exists')
+                } else {
+                    objects.push(object.object)
+                }
+                //  objects[`${object.uuid}`] = object
+
+                // console.log(objects)
+
+                // console.log(JSON.stringify(objects, null, 2))
+                // io.sockets.emit('state', { ...store.getState() })
+                io.sockets.emit('update-object-position', objects)
+            })
+
             client.on(
                 'update-object-position',
-                ({ id, rotation, position }) => {
-                    objects[id].position = position
-                    objects[id].rotation = rotation
+                ({ objArr, obj, id, rotation, position }) => {
+                    const newObj = objects.find((ob) => ob.uuid === obj.uuid)
+                    console.log('update-object-position')
+                    console.log(`Old Obj: ${JSON.stringify(newObj, null, 2)}`)
+                    newObj.position = position
+                    newObj.find((ob) => ob.uuid === obj.uuid).rotation =
+                        rotation
 
+                    // store.getState().setObjects(objects)
+                    //     store.setState({ objects: { ...objArr } })
+                    /*   objects = {...objArr} */
+
+                    /*  objects[id].position = position
+                    objects[id].rotation = rotation */
+                    io.sockets.emit('state', objects)
                     io.sockets.emit('update-object-position', objects)
                 }
             )
