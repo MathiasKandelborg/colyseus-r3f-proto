@@ -1,7 +1,7 @@
 import { XRController } from '@react-three/xr'
 import { Group } from 'three'
 
-function movement(isNull: null, player: Group, controllers: XRController[]) {
+function movement(isNull: Boolean, player: Group, controllers: XRController[]) {
     if (isNull) {
         return
     }

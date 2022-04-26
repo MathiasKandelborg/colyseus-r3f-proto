@@ -10,6 +10,8 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@colyseus/arena": "latest",
+        "@colyseus/monitor": "latest",
         "@emotion/cache": "latest",
         "@emotion/react": "latest",
         "@emotion/server": "latest",
@@ -22,24 +24,37 @@
         "@types/socket.io": "^3.0.2",
         "@types/socket.io-client": "^3.0.0",
         "@types/three": "^0.139.0",
+        "colyseus": "latest",
+        "colyseus.js": "^0.14.13",
+        "cors": "latest",
         "express": "^4.17.1",
         "express-promise-router": "^4.1.0",
         "next": "^12.1.5",
         "prettier": "^2.4.1",
         "react": "18.0.0",
         "react-dom": "18.0.0",
+        "serve-index": "latest",
         "socket.io": "^4.4.1",
         "socket.io-client": "^4.3.2",
+        "superagent": "latest",
         "three": "^0.139.0",
         "three-stdlib": "^2.9.1",
         "zustand": "^4.0.0-rc.0"
     },
     "devDependencies": {
+        "@colyseus/uwebsockets-transport": "latest",
+        "@types/cors": "latest",
+        "@types/express": "latest",
         "@types/node": "^17.0.25",
         "@types/react": "^18.0.6",
         "@types/react-dom": "^18.0.2",
+        "copyfiles": "latest",
         "eslint": "8.14.0",
         "eslint-config-next": "12.1.5",
-        "typescript": "^4.6.3"
+        "rimraf": "latest",
+        "ts-node": "latest",
+        "ts-node-dev": "latest",
+        "typescript": "^4.6.3",
+        "uwebsockets-express": "latest"
     }
 }

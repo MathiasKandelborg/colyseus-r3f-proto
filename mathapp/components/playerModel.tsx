@@ -25,4 +25,4 @@ export default function PlayerModel(props, { rotation, position, id }) {
     )
 }
 
-useGLTF.preload('/player.gltf')
+useGLTF.preload('/models/player.gltf')

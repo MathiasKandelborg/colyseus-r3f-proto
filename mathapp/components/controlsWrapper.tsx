@@ -1,8 +1,9 @@
 import { OrbitControls } from '@react-three/drei'
 import React, { useEffect, useRef, useState } from 'react'
 import { useStore } from '../util/store'
+import * as Colyseus from 'colyseus.js'
 
-const ControlsWrapper = ({ socket }) => {
+const ControlsWrapper = ({ socket }: { socket: Colyseus.Room }) => {
     const controlsRef = useRef()
     const [updateCallback, setUpdateCallback] = useState(null)
     const orbitControlsEnabled = useStore((state) => state.orbitControlsEnabled)
@@ -12,7 +13,7 @@ const ControlsWrapper = ({ socket }) => {
         const onControlsChange = (val) => {
             /*  if (orbitControlsEnabled) { */
             const { position, rotation } = val.target.object
-            const { id } = socket
+            // console.log(socket)
 
             const posArray = []
             const rotArray = []
@@ -20,11 +21,15 @@ const ControlsWrapper = ({ socket }) => {
             position.toArray(posArray)
             rotation.toArray(rotArray)
 
-            socket.emit('move', {
-                id,
-                rotation: rotArray,
-                position: posArray
-            })
+            // https://docs.colyseus.io/colyseus/client/client/#send-type-message
+            if (socket) {
+                const { id } = socket
+                socket.send('move', {
+                    id,
+                    rotation: rotArray,
+                    position: posArray
+                })
+            }
         }
 
         if (controlsRef.current) {
