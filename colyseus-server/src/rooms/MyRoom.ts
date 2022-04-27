@@ -5,6 +5,7 @@ import { IncomingMessage } from "http";
 import { MyRoomState } from "./schema/MyRoomState";
 import { OnJoinCommand } from "./onJoinCommand";
 import { OnMoveCommand } from "./onMoveCommand";
+import { OnLeaveCommand } from "./onLeaveCommand";
 
 export class MyRoom extends Room<MyRoomState> {
   dispatcher = new Dispatcher(this);
@@ -44,8 +45,11 @@ export class MyRoom extends Room<MyRoomState> {
   }
 
   onLeave(client: Client, consented: boolean) {
-    console.log(client.sessionId, "left!");
-  }
+    this.dispatcher.dispatch(new OnLeaveCommand(), {
+    sessionId: client.sessionId,
+  });
+  console.log(client.sessionId, "left!");
+}
 
   onDispose() {
     console.log("room", this.roomId, "disposing...");
