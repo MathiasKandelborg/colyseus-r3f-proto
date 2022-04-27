@@ -10,10 +10,16 @@ import Draggable from '../components/Draggable'
 import { useStore } from '../util/store'
 import { obj } from '../util/objectData'
 import * as Colyseus from 'colyseus.js'
+import shallow from 'zustand/shallow'
 
 const Home = () => {
     const [socketClient, setSocketClient] = useState<Colyseus.Client>(null)
-    const [clients, setClients] = useState({})
+    // It's important to use object destructuring here, otherwise the state won't be re-rendered on every state change. Should perhaps be changed to map, somehow
+    const { players } = useStore(
+        (state) => ({ players: state.players }),
+        shallow
+    )
+    const setPlayers = useStore((state) => state.setPlayers)
     const objects = useStore((state) => state.objects)
     const setObjects = useStore((state) => state.setObjects)
     const setState = useStore((state) => state.setObjs)
@@ -23,7 +29,7 @@ const Home = () => {
     const { player, controllers } = useXR()
 
     const socketInitializer = async () => {
-        var client = new Colyseus.Client('wss://9b44-80-208-56-134.eu.ngrok.io')
+        var client = new Colyseus.Client('ws://localhost:2567/')
         //  await fetch('/api/socket')
         // socket = io()
         setSocketClient(client)
@@ -50,16 +56,31 @@ const Home = () => {
                     setRoom(room)
 
                     room.onStateChange((state) => {
-                        const player = state.players.find(
-                            (p) => p.id === room.sessionId
-                        )
+                        const player = state.players.get(room.sessionId)
 
-                        console.log(state.players)
-                        if (player.position) {
-                            console.log(player.position)
-                        }
+                        const players = state.players
+
+                        setPlayers(players)
+                        //   if (player.position) {
+                        //  console.log(player.position)
+                        // }
                         //   console.log(state.players.get(room.sessionId))
                     })
+
+                    room.state.players.onAdd = (player) => {
+                        console.log('player added', player.id)
+                        setPlayers(player)
+                    }
+                    room.state.players.onRemove = (player) => {
+                        console.log('player not really removed', player)
+                    }
+
+                    room.state.players.onChange = (change) => {
+                        console.log(
+                            'player changed',
+                            JSON.stringify(change, null, 2)
+                        )
+                    }
 
                     //https://docs.colyseus.io/colyseus/client/client/#onleave
                     room.onLeave((code: 1000) => {
@@ -75,40 +96,13 @@ const Home = () => {
         }
     }, [socketClient])
 
-    // Useeffect to listen for updates from the socket clients
-    /* useEffect(() =>  // do it up in the if statement :)
-        socketClient.onStateChange((state) => { 
-            console.log("Something changed woooo!") */
-    /* if (socketClient) {
-            console.log(socketClient)
-            socketClient.on('connect', () => {
-                console.log('connected')
-            })
-
-            socketClient.on('disconnect', () => {
-                console.log('connected')
-            })
-
-            socketClient.on('move', (clients) => {
-                setClients(clients)
-            })
-
-            socketClient.on('state', (state) => {
-                console.log(state)
-                setState(state)
-            })
-
-            console.log('emitting add object')
-            socketClient.emit('add-object', {
-                object: obj
-            })
-
-            socketClient.on('update-object-position', (objects) => {
-                console.log(objects)
-                setObjects(objects)
-            })
-        }
-    }, [socketClient]) */
+    /*
+    const state = useStore((s) => s)
+    useEffect(() => {
+        console.log('clients updated')
+        console.log(state)
+    }, [players, state])
+     */
 
     return (
         <MUI.Container sx={{ height: '100vh' }}>
@@ -122,16 +116,17 @@ const Home = () => {
                     <gridHelper rotation={[0, 0, 0]} />
 
                     {/* Filter myself from the client list and create user box  es with IDs */}
-                    {Object.keys(clients)
-                        .filter((clientKey) => clientKey !== room.id)
+                    {players
+                        .filter((p) => p.id !== room.sessionId)
                         .map((client) => {
-                            const { position, rotation } = clients[client]
+                            console.log(client)
+                            console.log('loading client')
                             return (
                                 <UserWrapper
-                                    key={client}
-                                    id={client}
-                                    position={position}
-                                    rotation={rotation}
+                                    id={client.id}
+                                    key={client.id}
+                                    position={client.position}
+                                    rotation={client.rotation}
                                 />
                             )
                         })}
