@@ -19,7 +19,7 @@ export class MyRoom extends Room<MyRoomState> {
         rotation: message.rotation,
       });
 
-      this.setState(this.state);
+      // this.setState(this.state);
       /*     console.log(
         `${client.sessionId} sent a move message:\n ${JSON.stringify(
           message,

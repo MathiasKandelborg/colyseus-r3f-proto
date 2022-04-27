@@ -10,8 +10,8 @@ export class Position extends Schema {
   @type("float32") x: number;
   @type("float32") y: number;
   @type("float32") z: number;
-} //it says that  number has float and double format
-// Yea it's the type
+}
+
 export class Rotation extends Schema {
   @type("float32") x: number;
   @type("float32") y: number;
@@ -26,7 +26,7 @@ export class Player extends Schema {
 }
 
 export class MyRoomState extends Schema {
-  @type([Player]) players = new ArraySchema<Player>();
+  @type({map: Player}) players = new MapSchema<Player>();
   @type("string") mySynchronizedProperty: string = "Hello world";
 
   //  @type("array") myArray: string[] = ["a", "b", "c"];

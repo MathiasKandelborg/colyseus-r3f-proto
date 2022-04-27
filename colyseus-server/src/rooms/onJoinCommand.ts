@@ -10,10 +10,13 @@ export class OnJoinCommand extends Command<
 > {
   execute({ sessionId }) {
     const player = new Player({
-      id: sessionId,
-      position: { x: 0.0, y: 0.0, z: 0.0 },
-      rotation: { x: 0.0, y: 0.0, z: 0.0, order: "XYZ" },
+      id: sessionId
     });
-    this.state.players.push(player);
+
+    player.position.assign({ x: 0.0, y: 0.0, z: 0.0 }),
+    player.rotation.assign({ x: 0.0, y: 0.0, z: 0.0, order: "XYZ" }),
+    
+
+    this.state.players.set(sessionId, player);
   }
 }
