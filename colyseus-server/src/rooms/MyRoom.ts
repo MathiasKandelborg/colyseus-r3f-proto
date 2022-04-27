@@ -41,18 +41,18 @@ export class MyRoom extends Room<MyRoomState> {
     this.dispatcher.dispatch(new OnJoinCommand(), {
       sessionId: client.sessionId,
     });
-    console.log(client.sessionId, "joined!");
+    console.log(`${client.sessionId} joined!`);
   }
 
   onLeave(client: Client, consented: boolean) {
     this.dispatcher.dispatch(new OnLeaveCommand(), {
     sessionId: client.sessionId,
   });
-  console.log(client.sessionId, "left!");
+  console.log(`${client.sessionId} left!`);
 }
 
   onDispose() {
-    console.log("room", this.roomId, "disposing...");
+    console.log(`room ${this.roomId} disposing...`);
     this.dispatcher.stop();
   }
 }
