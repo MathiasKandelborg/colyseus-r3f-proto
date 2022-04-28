@@ -3,15 +3,20 @@ import {
     MeshNormalMaterial,
     MeshStandardMaterial,
     SphereBufferGeometry,
-    BoxBufferGeometry
+    BoxBufferGeometry,
+    Vector3,
+    Euler
 } from 'three'
 import React from 'react'
 
-const ObjectWrapper = ({ position, rotation, id }) => {
+const ObjectWrapper = ({ scale, position, rotation, name }) => {
     return (
         <mesh
-            position={position}
-            rotation={rotation}
+            position={new Vector3(position.x, position.y, position.z)}
+            rotation={
+                new Euler(rotation.x, rotation.y, rotation.z, rotation.order)
+            }
+            scale={new Vector3(scale.x, scale.y, scale.z)}
             geometry={new SphereBufferGeometry()}
             material={new MeshStandardMaterial()}
         >
@@ -21,7 +26,7 @@ const ObjectWrapper = ({ position, rotation, id }) => {
                 anchorX="center"
                 anchorY="middle"
             >
-                {id}
+                {name}
             </Text>
         </mesh>
     )

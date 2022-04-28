@@ -2,7 +2,7 @@ import { Room, Client } from "colyseus";
 import { Dispatcher } from "@colyseus/command";
 import { IncomingMessage } from "http";
 
-import { MyRoomState } from "./schema/MyRoomState";
+import { MyRoomState, Geometries, Position, Rotation, Scale } from "./schema/MyRoomState";
 import { OnJoinCommand } from "./onJoinCommand";
 import { OnMoveCommand } from "./onMoveCommand";
 import { OnLeaveCommand } from "./onLeaveCommand";
@@ -11,7 +11,17 @@ export class MyRoom extends Room<MyRoomState> {
   dispatcher = new Dispatcher(this);
 
   onCreate(options: any) {
+    console.log(`room ${this.roomId} created!`);
+
+    const initialObject = new Geometries({
+      name: "test-object",
+    });
+    initialObject.position.assign({ x: 0, y: 0, z: 0 });
+    initialObject.rotation.assign({ x: 0, y: 0, z: 0, order: 'XYZ' });
+    initialObject.scale.assign({ x: 1, y: 1, z: 1 });
+
     this.setState(new MyRoomState());
+    this.state.objects.set(initialObject.name, initialObject);
 
     this.onMessage("move", (client, message) => {
       this.dispatcher.dispatch(new OnMoveCommand(), {

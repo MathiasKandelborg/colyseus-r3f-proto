@@ -18,18 +18,20 @@ export class Rotation extends Schema {
   @type("float32") z: number;
   @type("string") order: string;
 }
+
 export class Scale extends Schema {
   @type("float32") x: number;
   @type("float32") y: number;
   @type("float32") z: number;
 }
+
 export class Player extends Schema {
   @type("string") id: string;
   @type(Position) position: Position = new Position();
   @type(Rotation) rotation: Rotation = new Rotation();
 }
 
-export class Objects extends Schema {
+export class Geometries extends Schema {
   @type("string") name: string;
   @type(Position) position: Position = new Position();
   @type(Rotation) rotation: Rotation = new Rotation();
@@ -38,6 +40,7 @@ export class Objects extends Schema {
 
 export class MyRoomState extends Schema {
   @type({map: Player}) players = new MapSchema<Player>();
+  @type({map: Geometries}) objects = new MapSchema<Geometries>();
   @type("string") mySynchronizedProperty: string = "Hello world";
 
   //  @type("array") myArray: string[] = ["a", "b", "c"];

@@ -42,18 +42,27 @@ const store = create<GlobalState>()(
                     console.log(payload.clients[payload.clients.length - 1])
                 }
             }),
-        objects: [obj],
+        objects: [],
         orbitControlsEnabled: true,
         // Define handlers for the variables
         setOrbitControlsEnabled: (orbitControlsEnabled: boolean) =>
             set((state) => ({ ...state, orbitControlsEnabled })),
 
-        setObjs: (state: GlobalState) =>
-            set((s) => {
-                console.log('setting state wee')
-                s.objects = state
+        setObjs: (payload: any) =>
+            set((state) => {
+                console.log('setting objects wee')
 
-                return s
+                let newObjArr = []
+
+                newObjArr = Array.from(payload, ([_, object]) => ({
+                    name: object.name,
+                    rotation: object.rotation,
+                    position: object.position,
+                    scale: object.scale
+                }))
+                console.log(newObjArr)
+
+                state.objects = [...newObjArr]
             }),
         /* Object handling */
         addObject: (obj) =>
@@ -83,7 +92,7 @@ interface Objectss {
 // This is our definition for the application state
 interface GlobalState {
     players: any
-    objects: Object3d[]
+    objects: any
     // Declare a boolean value
     orbitControlsEnabled: boolean
     // Declare a handler function to set the boolean value

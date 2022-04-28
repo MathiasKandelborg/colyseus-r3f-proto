@@ -21,8 +21,7 @@ const Home = () => {
     )
     const setPlayers = useStore((state) => state.setPlayers)
     const objects = useStore((state) => state.objects)
-    const setObjects = useStore((state) => state.setObjects)
-    const setState = useStore((state) => state.setObjs)
+    const setObjects = useStore((state) => state.setObjs)
     const [room, setRoom] = useState<Colyseus.Room>()
     // const [objects, setObjects] = useState({})
 
@@ -60,6 +59,7 @@ const Home = () => {
 
                         const players = state.players
 
+                        setObjects(state.objects)
                         setPlayers(players)
                         //   if (player.position) {
                         //  console.log(player.position)
@@ -113,7 +113,7 @@ const Home = () => {
                     {/*  <Stats /> */}
 
                     <ControlsWrapper socket={room} />
-                   {/*  <gridHelper rotation={[0, 0, 0]} /> */}
+                    {/*  <gridHelper rotation={[0, 0, 0]} /> */}
 
                     {/* Filter myself from the client list and create user box  es with IDs */}
                     {players
@@ -130,24 +130,25 @@ const Home = () => {
                                 />
                             )
                         })}
-                    {/*   {objects
+                    {objects
                         // Map does something for each object
                         // Each object is named in the callback function
                         .map((object) => {
                             console.log(object)
-                            const { id, position, rotation } = object
+                            const { name, position, rotation, scale } = object
 
                             return (
                                 <Draggable socketClient={socketClient}>
                                     <ObjectWrapper
-                                        key={id}
-                                        id={id}
+                                        key={name}
+                                        name={name}
                                         position={position}
                                         rotation={rotation}
+                                        scale={scale}
                                     />
                                 </Draggable>
                             )
-                        })} */}
+                        })}
                     <Hands />
                     <DefaultXRControllers />
                     <pointLight position={[0, 10, 0]} />
@@ -156,12 +157,8 @@ const Home = () => {
                                 rotation={[0, 0, 0]}
                                 
                             /> */}
-                     
+
                     {/*  <GltfLoader /> */}
-                    <Draggable >
-                    <ObjectWrapper position={[0,1,0]}/>
-                    </Draggable>
-                    
                     <GltfLoader />
                 </VRCanvas>
             )}
