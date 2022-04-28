@@ -9,6 +9,7 @@ import {
 } from 'three'
 import React from 'react'
 
+
 const ObjectWrapper = ({ scale, position, rotation, name }) => {
     return (
         <mesh

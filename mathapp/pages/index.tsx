@@ -104,6 +104,8 @@ const Home = () => {
     }, [players, state])
      */
 
+
+ 
     return (
         <MUI.Container sx={{ height: '100vh' }}>
             {socketClient && (
@@ -150,6 +152,7 @@ const Home = () => {
                             )
                         })}
                     <Hands />
+                    
                     <DefaultXRControllers />
                     <pointLight position={[0, 10, 0]} />
                     {/* <ObjectWrapper

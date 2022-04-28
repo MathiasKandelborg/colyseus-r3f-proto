@@ -51,7 +51,12 @@ const ControlsWrapper = ({ socket }: { socket: Colyseus.Room }) => {
     }, [controlsRef, socket])
 
     //
-    return <OrbitControls enabled={orbitControlsEnabled} ref={controlsRef} />
+    return <OrbitControls 
+    maxDistance={3} 
+    minDistance={0.5} 
+    maxPolarAngle={Math.PI/2.1}
+    minPolarAngle={Math.PI / 7}
+    enabled={orbitControlsEnabled} ref={controlsRef} />
 }
 
 export { ControlsWrapper }
