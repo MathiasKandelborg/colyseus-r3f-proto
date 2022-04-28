@@ -18,11 +18,22 @@ export class Rotation extends Schema {
   @type("float32") z: number;
   @type("string") order: string;
 }
-
+export class Scale extends Schema {
+  @type("float32") x: number;
+  @type("float32") y: number;
+  @type("float32") z: number;
+}
 export class Player extends Schema {
   @type("string") id: string;
   @type(Position) position: Position = new Position();
   @type(Rotation) rotation: Rotation = new Rotation();
+}
+
+export class Objects extends Schema {
+  @type("string") name: string;
+  @type(Position) position: Position = new Position();
+  @type(Rotation) rotation: Rotation = new Rotation();
+  @type(Scale) scale: Scale = new Scale();
 }
 
 export class MyRoomState extends Schema {
