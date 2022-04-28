@@ -43,7 +43,7 @@ export default function PlayerModel({ children, rotation, position, id }) {
         material={materials["Material.004"]}
       />
         {children}
-        <group position={rotation} rotation={position} />
+        {/* <group position={rotation} rotation={position} /> */}
     </group>
     </group>
     )

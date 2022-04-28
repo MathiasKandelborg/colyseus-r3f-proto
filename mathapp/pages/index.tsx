@@ -113,7 +113,7 @@ const Home = () => {
                     {/*  <Stats /> */}
 
                     <ControlsWrapper socket={room} />
-                    <gridHelper rotation={[0, 0, 0]} />
+                   {/*  <gridHelper rotation={[0, 0, 0]} /> */}
 
                     {/* Filter myself from the client list and create user box  es with IDs */}
                     {players
@@ -151,14 +151,18 @@ const Home = () => {
                     <Hands />
                     <DefaultXRControllers />
                     <pointLight position={[0, 10, 0]} />
-                    {/*    <Draggable socketClient={socketClient}>
-                            <ObjectWrapper
+                    {/* <ObjectWrapper
                                 position={[0, 0, 1]}
                                 rotation={[0, 0, 0]}
-                                id="0"
-                            />
-                        </Draggable> */}
+                                
+                            /> */}
+                     
                     {/*  <GltfLoader /> */}
+                    <Draggable >
+                    <ObjectWrapper position={[0,1,0]}/>
+                    </Draggable>
+                    
+                    <GltfLoader />
                 </VRCanvas>
             )}
         </MUI.Container>
