@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
-import { Vector3 } from 'three'
+import { Euler, Vector3 } from 'three'
 
 export default function PlayerModel({ children, rotation, position, id }) {
     const group = useRef()
@@ -14,24 +14,40 @@ export default function PlayerModel({ children, rotation, position, id }) {
     )
     return (
         <group ref={group} dispose={null}>
-            <group
-                //   rotation={rotation}
-                rotation-x={-Math.PI / 2}
-                rotation-z={-Math.PI}
-                position={new Vector3(position.x, position.y, position.z)}
-                scale={0.4}
-            >
-                <mesh
-                    castShadow
-                    receiveShadow
-                    geometry={nodes.Cube_0.geometry}
-                    material={materials['Material.001']}
-                />
-                {children}
-                <group position={rotation} rotation={position} />
-            </group>
-        </group>
+      <group scale={0.3}
+      
+      position = {new Vector3(position.x,position.y, position.z)}
+      rotation = {new Euler(rotation.x, rotation.y , rotation.z, 'XYZ')}>
+        <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Cube_0_1.geometry}
+        material={materials["Material.001"]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Cube_0_2.geometry}
+        material={materials["Material.002"]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Cube_0_3.geometry}
+        material={materials["Material.003"]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Cube_0_4.geometry}
+        material={materials["Material.004"]}
+      />
+        {children}
+        <group position={rotation} rotation={position} />
+    </group>
+    </group>
     )
 }
+
 
 useGLTF.preload('/models/player.gltf')
