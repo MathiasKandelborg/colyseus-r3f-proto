@@ -33,7 +33,7 @@ const Home = () => {
     const { player, controllers } = useXR()
 
     const socketInitializer = async () => {
-        var client = new Colyseus.Client('wss://localhost:2567')
+        var client = new Colyseus.Client('ws://localhost:2567')
         //  await fetch('/api/socket')
         // socket = io()
         setSocketClient(client)
