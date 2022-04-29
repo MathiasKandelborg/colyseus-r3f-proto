@@ -30,6 +30,13 @@ export class MyRoom extends Room<MyRoomState> {
         rotation: message.rotation,
       });
 
+      this.onMessage("object-position-update", (clients, object) => {
+        this.state.objects.get(object.name).position.assign(object.position);
+        this.state.objects.get(object.name).rotation.assign(object.rotation);
+        this.state.objects.get(object.name).scale.assign(object.scale);
+        console.log(this.state.objects.get(object.name));
+      })
+
       // this.setState(this.state);
       /*     console.log(
         `${client.sessionId} sent a move message:\n ${JSON.stringify(

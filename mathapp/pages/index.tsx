@@ -59,12 +59,8 @@ const Home = () => {
 
                         const players = state.players
 
-                        setObjects(state.objects)
                         setPlayers(players)
-                        //   if (player.position) {
-                        //  console.log(player.position)
-                        // }
-                        //   console.log(state.players.get(room.sessionId))
+                        setObjects(state.objects)
                     })
 
                     room.state.players.onAdd = (player) => {
@@ -104,11 +100,9 @@ const Home = () => {
     }, [players, state])
      */
 
-
- 
     return (
         <MUI.Container sx={{ height: '100vh' }}>
-            {socketClient && (
+            {socketClient && room && (
                 <VRCanvas
                     camera={{ position: [0, 1, -5], near: 0.1, far: 1000 }}
                 >
@@ -132,27 +126,29 @@ const Home = () => {
                                 />
                             )
                         })}
-                    {objects
-                        // Map does something for each object
-                        // Each object is named in the callback function
-                        .map((object) => {
-                            console.log(object)
-                            const { name, position, rotation, scale } = object
+                    <Draggable>
+                        {objects
+                            // Map does something for each object
+                            // Each object is named in the callback function
+                            .map((object) => {
+                                console.log(object)
+                                const { name, position, rotation, scale } =
+                                    object
 
-                            return (
-                                <Draggable socketClient={socketClient}>
+                                return (
                                     <ObjectWrapper
+                                        socketClient={room}
                                         key={name}
                                         name={name}
                                         position={position}
                                         rotation={rotation}
                                         scale={scale}
                                     />
-                                </Draggable>
-                            )
-                        })}
+                                )
+                            })}
+                    </Draggable>
                     <Hands />
-                    
+
                     <DefaultXRControllers />
                     <pointLight position={[0, 10, 0]} />
                     {/* <ObjectWrapper

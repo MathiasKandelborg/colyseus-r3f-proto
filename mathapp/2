@@ -27,7 +27,7 @@ const ObjectWrapper = ({ socketClient, scale, position, rotation, name }) => {
             // https://docs.colyseus.io/colyseus/client/client/#send-type-message
             if (socketClient) {
                 const { id } = socketClient
-                socketClient.send('object-position-update', {
+                socketClient.send('update-object-position', {
                     id,
                     rotation: rotArray,
                     position: posArray
@@ -46,10 +46,16 @@ const ObjectWrapper = ({ socketClient, scale, position, rotation, name }) => {
         return () => {
             if (updateCallback && objectRef.current)
                 // @ts-ignore
-                objectRef.current.removeEventListener('change', onObjectChange)
+                controlsRef.current.removeEventListener(
+                    'change',
+                    onObjectChange
+                )
         }
     }, [objectRef, socketClient])
 
+    useEffect(() => {
+        console.log(`${name} mounted`)
+    }, [])
     return (
         <mesh
             ref={objectRef}
