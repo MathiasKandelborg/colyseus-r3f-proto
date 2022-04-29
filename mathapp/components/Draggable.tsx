@@ -6,9 +6,9 @@ import { useStore } from '../util/store'
 extend({ DragControls })
 
 function Draggable({ children }) {
-    const groupRef = useRef<HTMLCanvasElement>()
-    const controlsRef = useRef<HTMLCanvasElement>()
-    const [draggableObjects, setObjects] = useState()
+    const groupRef = useRef<HTMLCanvasElement>(null)
+    const controlsRef = useRef<HTMLCanvasElement>(null)
+    const [draggableObjects, setObjects] = useState([])
     const { camera, gl, scene } = useThree()
     const setOrbitControlsEnabled = useStore(
         (state) => state.setOrbitControlsEnabled

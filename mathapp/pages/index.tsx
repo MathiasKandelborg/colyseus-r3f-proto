@@ -131,8 +131,8 @@ const Home = () => {
                                 />
                             )
                         })}
-                    <Draggable>
-                        <RayGrab>
+                    <RayGrab>
+                        <Draggable>
                             {objects
                                 // Map does something for each object
                                 // Each object is named in the callback function
@@ -158,8 +158,8 @@ const Home = () => {
                                         />
                                     )
                                 })}
-                        </RayGrab>
-                    </Draggable>
+                        </Draggable>
+                    </RayGrab>
                     <Hands />
 
                     <DefaultXRControllers />
