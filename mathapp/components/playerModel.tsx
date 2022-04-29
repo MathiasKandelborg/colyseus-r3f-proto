@@ -15,7 +15,7 @@ export default function PlayerModel({ children, rotation, position, id }) {
     return (
         <group ref={group} dispose={null}>
             <group
-                scale={0.3}
+                scale={0.1}
                 position={new Vector3(position.x, position.y, position.z)}
                 rotation={new Euler(rotation.x, rotation.y, rotation.z, 'XYZ')}
             >
