@@ -1,5 +1,11 @@
 import * as MUI from '@mui/material'
-import { DefaultXRControllers, Hands, useXR, VRCanvas } from '@react-three/xr'
+import {
+    DefaultXRControllers,
+    Hands,
+    RayGrab,
+    useXR,
+    VRCanvas
+} from '@react-three/xr'
 import { useEffect, useState } from 'react'
 import { ControlsWrapper } from '../components/controlsWrapper'
 import { ObjectWrapper } from '../components/ObjectsWrapper'
@@ -8,7 +14,6 @@ import { movement } from '../util/hooks/movementHook'
 import GltfLoader from '../components/gltfloader'
 import Draggable from '../components/Draggable'
 import { useStore } from '../util/store'
-import { obj } from '../util/objectData'
 import * as Colyseus from 'colyseus.js'
 import shallow from 'zustand/shallow'
 
@@ -28,7 +33,7 @@ const Home = () => {
     const { player, controllers } = useXR()
 
     const socketInitializer = async () => {
-        var client = new Colyseus.Client('ws://localhost:2567/')
+        var client = new Colyseus.Client('wss://localhost:2567')
         //  await fetch('/api/socket')
         // socket = io()
         setSocketClient(client)
@@ -127,25 +132,33 @@ const Home = () => {
                             )
                         })}
                     <Draggable>
-                        {objects
-                            // Map does something for each object
-                            // Each object is named in the callback function
-                            .map((object) => {
-                                console.log(object)
-                                const { name, position, rotation, scale } =
-                                    object
+                        <RayGrab>
+                            {objects
+                                // Map does something for each object
+                                // Each object is named in the callback function
+                                .map((object) => {
+                                    console.log(object)
+                                    const {
+                                        id,
+                                        name,
+                                        position,
+                                        rotation,
+                                        scale
+                                    } = object
 
-                                return (
-                                    <ObjectWrapper
-                                        socketClient={room}
-                                        key={name}
-                                        name={name}
-                                        position={position}
-                                        rotation={rotation}
-                                        scale={scale}
-                                    />
-                                )
-                            })}
+                                    return (
+                                        <ObjectWrapper
+                                            socketClient={room}
+                                            id={id}
+                                            key={name}
+                                            name={name}
+                                            position={position}
+                                            rotation={rotation}
+                                            scale={scale}
+                                        />
+                                    )
+                                })}
+                        </RayGrab>
                     </Draggable>
                     <Hands />
 

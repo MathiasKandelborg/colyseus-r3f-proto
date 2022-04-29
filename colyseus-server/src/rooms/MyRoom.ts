@@ -2,10 +2,11 @@ import { Room, Client } from "colyseus";
 import { Dispatcher } from "@colyseus/command";
 import { IncomingMessage } from "http";
 
-import { MyRoomState, Geometries, Position, Rotation, Scale } from "./schema/MyRoomState";
+import { MyRoomState, Geometry, Position, Rotation, Scale } from "./schema/MyRoomState";
 import { OnJoinCommand } from "./onJoinCommand";
 import { OnMoveCommand } from "./onMoveCommand";
 import { OnLeaveCommand } from "./onLeaveCommand";
+import {OnObjectMoveCommand} from "./onObjectMove";
 
 export class MyRoom extends Room<MyRoomState> {
   dispatcher = new Dispatcher(this);
@@ -13,15 +14,16 @@ export class MyRoom extends Room<MyRoomState> {
   onCreate(options: any) {
     console.log(`room ${this.roomId} created!`);
 
-    const initialObject = new Geometries({
+    const initialObject = new Geometry({
+      id: "25jk-jkh3-k115-fsf5",
       name: "test-object",
     });
     initialObject.position.assign({ x: 0, y: 0, z: 0 });
     initialObject.rotation.assign({ x: 0, y: 0, z: 0, order: 'XYZ' });
-    initialObject.scale.assign({ x: 1, y: 1, z: 1 });
+    initialObject.scale.assign({ x: 0.5, y: 0.5, z: 0.5 });
 
     this.setState(new MyRoomState());
-    this.state.objects.set(initialObject.name, initialObject);
+    this.state.objects.set(initialObject.id, initialObject);
 
     this.onMessage("move", (client, message) => {
       this.dispatcher.dispatch(new OnMoveCommand(), {
@@ -30,11 +32,15 @@ export class MyRoom extends Room<MyRoomState> {
         rotation: message.rotation,
       });
 
-      this.onMessage("object-position-update", (clients, object) => {
-        this.state.objects.get(object.name).position.assign(object.position);
-        this.state.objects.get(object.name).rotation.assign(object.rotation);
-        this.state.objects.get(object.name).scale.assign(object.scale);
-        console.log(this.state.objects.get(object.name));
+      this.onMessage("object-position-update", (client, object) => {
+        this.dispatcher.dispatch(new OnObjectMoveCommand(), {
+          id: object.id,
+          sessionId: client.sessionId,
+          name: object.name,
+          position: object.position,
+          rotation: object.rotation,
+          scale: object.scale,
+        });
       })
 
       // this.setState(this.state);

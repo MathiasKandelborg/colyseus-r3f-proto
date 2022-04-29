@@ -1,7 +1,5 @@
 import {
   Schema,
-  Context,
-  ArraySchema,
   MapSchema,
   type,
 } from "@colyseus/schema";
@@ -31,7 +29,8 @@ export class Player extends Schema {
   @type(Rotation) rotation: Rotation = new Rotation();
 }
 
-export class Geometries extends Schema {
+export class Geometry extends Schema {
+  @type("string") id: string;
   @type("string") name: string;
   @type(Position) position: Position = new Position();
   @type(Rotation) rotation: Rotation = new Rotation();
@@ -40,7 +39,7 @@ export class Geometries extends Schema {
 
 export class MyRoomState extends Schema {
   @type({map: Player}) players = new MapSchema<Player>();
-  @type({map: Geometries}) objects = new MapSchema<Geometries>();
+  @type({map: Geometry}) objects = new MapSchema<Geometry>();
   @type("string") mySynchronizedProperty: string = "Hello world";
 
   //  @type("array") myArray: string[] = ["a", "b", "c"];

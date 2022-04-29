@@ -54,8 +54,9 @@ const store = create<GlobalState>()(
 
                 let newObjArr = []
 
-                newObjArr = Array.from(payload, ([_, object]) => ({
+                newObjArr = Array.from(payload, ([id, object]) => ({
                     name: object.name,
+                    id,
                     rotation: object.rotation,
                     position: object.position,
                     scale: object.scale
